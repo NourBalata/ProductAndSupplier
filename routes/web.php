@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
+use App\Models\SaleOrder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +27,7 @@ Route::resource('products',ProductController::class);
 
 //Suppliers
 Route::resource('suppliers',SupplierController::class);
+
+
+//SalesOrders
+Route::resource('sales_orders',SalesOrderController::class);

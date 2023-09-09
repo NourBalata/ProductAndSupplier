@@ -20,9 +20,11 @@ class SaleOrder extends Model
 
         return $this->belongsTo(Supplier::class,'supplier_id');
     }
-    public function Product(){
 
-        return $this->belongsTo(Product::class);
+    public function sales_order_details(){
+
+        return $this->hasMany(SalesOrderDetail::class);
     }
+  
 
 }

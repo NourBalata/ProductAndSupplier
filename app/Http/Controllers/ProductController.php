@@ -12,8 +12,23 @@ class ProductController extends Controller
     {
      
         $data = Product::get();
+        $data = Product::get();
+        //dd($data);
 
+        $data2 = Product::select('products.*')
+      ->get();
+ 
+        // return response()->json($data);
         return  view('products.index',compact('data')) ;
+    }
+
+    public function prduct(Request $request)
+    { 
+        $product = $request->input('product_id');
+
+
+
+
     }
 
     public function store(ProductRequest $request)
@@ -34,9 +49,9 @@ class ProductController extends Controller
 
             Product::create($data);
 
-
-            session()->flash('success','The data has been Created successfully');
-            return redirect()->route('products.index');
+            return response()->json($data);
+            // session()->flash('success','The data has been Created successfully');
+            // return redirect()->route('products.index');
 
 
         } catch (\Exception $ex) {
@@ -50,7 +65,8 @@ class ProductController extends Controller
       
         $product = Product::find($request->product_id);
     
-
+   
+       
             $data['title'] = $request->title;
             $data['price'] = $request->price;
             $data['note'] = $request->note;
@@ -99,6 +115,6 @@ class ProductController extends Controller
 
             return redirect()->back()->with(['error' => $ex->getmessage()]);
 
-        } //
+        } 
     }
 }

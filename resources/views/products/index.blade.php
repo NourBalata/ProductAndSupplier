@@ -145,7 +145,7 @@
                                 <div class="card-body pb-0">
                                     <div class="modal-body">
                                         <form action="{{route('products.store')}}" method="post"
-                                              enctype="multipart/form-data">
+                                              enctype="multipart/form-data" id="storedata">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">title:<span
@@ -177,14 +177,14 @@
                                             </div>
  
 
-                                        
+                                   
+                                                
+
                                             <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">Note: <span
+                                                <label for="recipient-name" class="col-form-label">Note:<span
                                                         class="login-danger">*</span></label>
                                                 <input type="text" name="note" required value="{{old('note')}}"
-                                                       class="form-control" type="text"
-                                                     
-                                                       id="recipient-name">
+                                                       class="form-control" id="recipient-name">
 
                                                 @error('note')
                                                 <span class="invalid-feedback" role="alert">
@@ -449,8 +449,7 @@
         </div>
     </div>
 
-{{-- @endsection --}}
-{{-- @section('scripts') --}}
+
 
     <script>
         $(document).ready(function () {
@@ -490,16 +489,11 @@
             modal.find('.modal-body #pic').attr("src", image);
 
 
-            if (status == 1) {
-                $("#status1").prop("checked", true);
-            } else {
-                $("#status0").prop("checked", true);
-
-            }
+           
 
         })
     </script>
-<script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
@@ -529,6 +523,7 @@
         $('#table1').DataTable();
     });
 </script>
+
 <script>
     setTimeout(function() {
         $('#my_alert_s').fadeOut('fast');
@@ -537,7 +532,41 @@
     //     $('#my_alert_e').fadeOut('fast');
     // }, 1000); // <-- time in milliseconds
 
+    
+</script>
+<script>
+ 	   var config = {
+                  routes: {
+                    store: "{!! route('products.store') !!}",
+        }
+    };
+
+$(document).on('submit', '#storedata', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: config.routes.store,
+            method: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            
+            success: function(response) {
+                
+                alert('Save Data For Products');
+                $('#message').appaned('True!!!!');
+                // new FormData('#message').html(response.message);
+                if (response.status == true) {
+
+                    console.log(response.data);                                   
+               }
+            },
+
+        });
+
+
+    });
 
 </script>
-    </script>
-{{-- @endsection --> --}}

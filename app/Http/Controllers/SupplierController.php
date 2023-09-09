@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    //
+    
     public function index()
     {
      
@@ -16,6 +16,9 @@ class SupplierController extends Controller
 
         return  view('suppliers.index',compact('data')) ;
     }
+
+
+
     public function store(SupplierRequest $request)
     {
        
@@ -24,15 +27,11 @@ class SupplierController extends Controller
             $data['name'] = $request->name;
            
             $data['status'] = $request->status;
-
-
-         
-
             Supplier::create($data);
 
-
-            session()->flash('success','The data has been Created successfully');
-            return redirect()->route('suppliers.index');
+            return response()->json($data);
+            // session()->flash('success','The data has been Created successfully');
+            // return redirect()->route('suppliers.index');
 
 
         } catch (\Exception $ex) {

@@ -129,8 +129,9 @@
                             <div class="card invoice-info-card">
                                 <div class="card-body pb-0">
                                     <div class="modal-body">
+                                        <div id="message"> </div>
                                         <form action="{{route('suppliers.store')}}" method="post"
-                                              enctype="multipart/form-data">
+                                              enctype="multipart/form-data" id="storedata">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">Name:<span
@@ -234,13 +235,6 @@
                                             </div>
 
 
-                                  
-                              
-
-                                           
-               
-                                          
-
                                             <div class="form-group">
                                                 <div class="col">
                                                     <div class="form-group select-gender">
@@ -322,8 +316,7 @@
         </div>
     </div>
 
-{{-- @endsection --}}
-{{-- @section('scripts') --}}
+
 
     <script>
         $(document).ready(function () {
@@ -358,16 +351,11 @@
       
 
 
-            if (status == 1) {
-                $("#status1").prop("checked", true);
-            } else {
-                $("#status0").prop("checked", true);
-
-            }
+         
 
         })
     </script>
-<script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
@@ -407,5 +395,44 @@
 
 
 </script>
-    </script>
-{{-- @endsection --> --}}
+
+
+
+<script>
+		   var config = {
+                  routes: {
+                    store: "{!! route('suppliers.store') !!}",
+        }
+    };
+
+$(document).on('submit', '#storedata', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: config.routes.store,
+            method: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            
+            success: function(response) {
+                
+                alert('Save Data For Suppliers');
+                $('#message').appaned('True!!!!');
+                // new FormData('#message').html(response.message);
+                if (response.status == true) {
+
+                    console.log(response.data);                                   
+               }
+            },
+
+        });
+
+
+    });
+
+
+</script>
+

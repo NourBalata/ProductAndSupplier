@@ -38,7 +38,7 @@
                                         {{--                                        </div>--}}
                                         <div class="add-group">
                                             <a href="#" data-bs-toggle="modal"
-                                               data-bs-target="#add_sale_order"
+                                               data-bs-target="#add_sale_order" 
                                                class=" modal-effect btn btn-primary add-pluss ms-2"><img
                                                     src="{{asset('dashboard/assets/img/icons/plus.svg')}}" alt="">Add Sales Orders</a>
 
@@ -67,8 +67,8 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table id="table1" class="table border-0 custom-table comman-table  mb-0">
+                    <div class="table-responsive" id="print">
+                        <table id="table1" class="table border-0 custom-table comman-table  mb-0" >
                             <thead>
                             <tr>
 
@@ -124,6 +124,8 @@
                                                 <a class="dropdown-item" data-sale_order_id="{{$info->id}}" href="#"
                                                    data-bs-toggle="modal" data-bs-target="#delete_sale_order"><i
                                                         class="fa fa-trash-alt m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item" href="{{route('sales_orders.show',$info->id)}}"><i
+                                                            class="fa-solid fa-eye m-r-5"></i> Details</a>
                                             </div>
                                         </div>
                                     </td>
@@ -131,13 +133,20 @@
 
                             @endforeach
                             </tbody>
+                            
                         </table>
+                        <div class="col-lg-8 col-md-8">
+
+                            <button onclick="printDiv()" class="btn btn-primary"><li class="fas fa-print"></li></button>
+                                           
+                            </div>
                     </div>
                 </div>
-
+        
             </div>
         </div>
     </div>
+   
     {{--    //add_service--}}
     <div class="modal custom-modal fade invoices-preview" id="add_sale_order" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
@@ -155,7 +164,7 @@
                                 <div class="card-body pb-0">
                                     <div class="modal-body">
                                         <form action="{{route('sales_orders.store')}}" method="post"
-                                              enctype="multipart/form-data">
+                                              enctype="multipart/form-data" id="storedata">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">Place:<span
@@ -169,12 +178,6 @@
                                               </span>
                                                 @enderror
                                             </div>
-
-
-                                   
-                                                  
-
-                                             
 
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">Supplier:<span
@@ -406,13 +409,23 @@
 <script src="{{asset('dashboard/assets/js/app.js')}}"></script>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#table1').DataTable();
-        });
+<script>
 
+    $(document).ready(function () {
+        $('#table1').DataTable();
+    });
+</script>
 
-    </script>
+<script>
+    setTimeout(function() {
+        $('#my_alert_s').fadeOut('fast');
+    }, 2000); // <-- time in milliseconds
+    //  setTimeout(function() {
+    //     $('#my_alert_e').fadeOut('fast');
+    // }, 1000); // <-- time in milliseconds
+
+    
+</script>
 
     <script>
         // Model Delete
@@ -423,6 +436,23 @@
             modal.find('.modal-body #sale_order_id').val(sale_order_id);
         })
     </script>
+    
+<script>
+
+          function printDiv() {
+      var printContents = document.getElementById('print').innerHTML;
+      var originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      location.reload();
+  }
+
+
+
+    </script>
+
+
 
     <script>
         // Model Edit
@@ -448,4 +478,42 @@
         })
     </script>
 
+ 
+<script>
+		   var config = {
+                  routes: {
+                    store: "{!! route('sales_orders.store') !!}",
+        }
+    };
+
+$(document).on('submit', '#storedata', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: config.routes.store,
+            method: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            
+            success: function(response) {
+                
+                alert('Save Data for Sales Order');
+                $('#message').appaned('True!!!!');
+                // new FormData('#message').html(response.message);
+                if (response.status == true) {
+
+                    console.log(response.data);                                   
+               }
+            },
+
+        });
+
+
+    });
+
+  
+</script>
 

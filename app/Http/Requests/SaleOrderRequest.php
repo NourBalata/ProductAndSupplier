@@ -24,8 +24,13 @@ class SaleOrderRequest extends FormRequest
         return [
             'place'=>'required',
             'supplier_id'=>'required',
-            'product_id'=>'required',
-            // 'final_total'=>'required',
+           
+            'product.*'=>'required',
+          
+            'quantity.*'=>'required',
+            'price.*'=>'required|numeric',
+            // 'amount.*'=>'required|numeric',
+            'final_total'=>'required',
         ];
     }
 }

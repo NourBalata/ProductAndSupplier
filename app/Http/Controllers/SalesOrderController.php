@@ -80,21 +80,25 @@ class SalesOrderController extends Controller
             $total=$salesorders->final_total;
             $id=$salesorders->id;
             $this->get_supplier_data($id);
-            // dd($id);
-     
-    //         $sale2=new SalesOrderDetail();
-    //         $sale2->salesorders_id=$salesorders->id;
-    //         $sale2->products_id=$request->product_id;
 
-    //         $sale2->quantity = 1;
-    //         $sale2->price = $request->price;
+            for ($i = 0; $i < count($request->product); $i++) {
+
+                $details[$i]['sales_order_id'] = $salesorders->id;
+                $details[$i]['product_id']  = $request->product[$i];
         
+        
+                $details[$i]['quantity']  = $request->quantity[$i];
+                $details[$i]['price']  = $request->price[$i];
+                $details[$i]['amount']  = $request->amount[$i];
            
-    //     //    dd($sale2);
+            
 
-    //    $sale2->save();
-    //   dd( $arr[$sale2]);
-// $arr[$sale2]->save();
+            }
+
+            DB::table('sales_order_details')->insert($details);
+
+
+            DB::commit();
             session()->flash('success','The data has been Created successfully');
             return redirect()->back();
     
